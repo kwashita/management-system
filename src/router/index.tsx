@@ -1,18 +1,26 @@
-import App from "../App";
-import Home from "../views/Home";
-import About from "../views/About";
+import React, { lazy } from "react";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-const baseRouter = () => (
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<App />}>
-        <Route path="/home" element={<Home />}></Route>
-        <Route path="/about" element={<About />}></Route>
-      </Route>
-    </Routes>
-  </BrowserRouter>
+const About = lazy(() => import("../views/About"));
+const Home = lazy(() => import("../views/Home"));
+
+const withLoadingComponent = (child: JSX.Element) => (
+  <React.Suspense fallback={<div>loading...</div>}>{child}</React.Suspense>
 );
+const routes = [
+  {
+    path: "/",
+    element: <Navigate to="/home" />,
+  },
+  {
+    path: "/home",
+    element: withLoadingComponent(<About />),
+  },
+  {
+    path: "/about",
+    element: withLoadingComponent(<Home />),
+  },
+];
 
-export default baseRouter;
+export default routes;
