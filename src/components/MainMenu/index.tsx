@@ -1,7 +1,7 @@
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   DesktopOutlined,
   FileOutlined,
@@ -27,22 +27,35 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("Option 1", "/page1", <PieChartOutlined />),
-  getItem("Option 2", "/page2", <DesktopOutlined />),
-  getItem("User", "sub1", <UserOutlined />, [
-    getItem("Tom", "3"),
-    getItem("Bill", "4"),
-    getItem("Alex", "5"),
-  ]),
-  getItem("Team", "sub2", <TeamOutlined />, [
-    getItem("Team 1", "6"),
-    getItem("Team 2", "8"),
-  ]),
-  getItem("Files", "9", <FileOutlined />),
+  { label: "Option 1", key: "/page1", icon: <PieChartOutlined /> },
+  { label: "Option 2", key: "/page2", icon: <DesktopOutlined /> },
+  {
+    label: "User",
+    key: "page3",
+    icon: <UserOutlined />,
+    children: [
+      { label: "301", key: "/page3/page301" },
+      { label: "Bill", key: "4" },
+      { label: "Alex", key: "5" },
+    ],
+  },
+  {
+    label: "Team",
+    key: "sub2",
+    icon: <TeamOutlined />,
+    children: [
+      { label: "Team 1", key: "6" },
+      { label: "Team 2", key: "7" },
+    ],
+  },
+  { label: "Files", key: "9", icon: <FileOutlined /> },
 ];
 
 const Comp: React.FC = () => {
   const [openKeys, setOpenKeys] = useState([""]);
+  const currentRoute = useLocation();
+  console.log(currentRoute);
+
   const navigateTo = useNavigate();
 
   const menuClick = (e: { key: string }) => {
@@ -60,7 +73,7 @@ const Comp: React.FC = () => {
   return (
     <Menu
       theme="dark"
-      defaultSelectedKeys={["1"]}
+      defaultSelectedKeys={[currentRoute.pathname]}
       mode="inline"
       items={items}
       onClick={menuClick}
