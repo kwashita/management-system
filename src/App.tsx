@@ -8,7 +8,7 @@ export default function App() {
   const outlet = useRoutes(router);
   return (
     <div className="App">
-      <Link to={"/home"}>Home</Link> |<Link to={"/about"}>About</Link>
+      {/* <Link to={"/home"}>Home</Link> |<Link to={"/about"}>About</Link> */}
       {/* <Outlet></Outlet> */}
       {outlet}
     </div>
